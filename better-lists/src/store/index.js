@@ -1,10 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { listsReducer, changeSearchTerm, createList, removeList, addToList, removeFromList } from "./slices/listsSlice";
+import { listsReducer } from "./slices/listsSlice";
+import { changeNewListName, changeEditListName } from "./slices/listsSlice";
 
 const store = configureStore({
     reducer: {
-        listStore: listsReducer
+        lists: listsReducer
     }
 });
 
-export { store, changeSearchTerm, createList, removeList, addToList, removeFromList };
+export * from "./thunks/fetchLists";
+export * from "./thunks/addList";
+export * from "./thunks/editList";
+export * from "./thunks/removeList";
+export { store, changeNewListName, changeEditListName };

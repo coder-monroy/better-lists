@@ -1,0 +1,32 @@
+{
+    "lists": [
+        {
+            "id": 1,
+            "name": "Mangas",
+            "items": []
+        },
+        {
+            "id": 2,
+            "name": "Movies",
+            "items": []
+        },
+        {
+            "id": 3,
+            "name": "Animes",
+            "items": []
+        }
+    ],
+    "items": {
+        "2f3f64ac-9957-4aa7-a46e-04c718a39740": [
+            {
+                "item_id": 1,
+                "type": "Manga",
+                "text": "Sample entry",
+                "tags": [
+                    "Romance",
+                    "Comedy"
+                ]
+            }
+        ]
+    }
+}

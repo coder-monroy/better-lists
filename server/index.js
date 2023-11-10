@@ -1,19 +1,44 @@
 import express from "express";
-import * as fs from 'node:fs';
-import { createFile, readList, createList, addToList, deleteFromList, deleteList } from "./dbmanager";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { fetchLists, createList, editList, deleteList, addToList, deleteFromList } from "./dbmanager.js";
 
 const app = express();
 const port = 3030;
 const dbpath = "./db.json";
 
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
+// middleware
+app.use(cors({ origin: "*" }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// returns all lists and their data from db
+app.get("/lists", (req, res) => {
+    let response = fetchLists(dbpath);
+    res.send(response);
 });
 
-app.get("/message", (req, res) => {
-    res.json({ message: "Hello from server!" });
+// posts a new list in the db
+app.post("/lists", (req, res) => {
+    createList(dbpath, req.body);
+    res.send(req.body);
+});
+
+// patches/edits the name of a list in the db
+app.patch("/lists/:listId", (req, res) => {
+    let edits = {
+        listId: req.params.listId,
+        newName: req.body.newName
+    }
+
+    editList(dbpath, edits);
+    res.send(edits);
+});
+
+// deletes the target list from the db
+app.delete("/lists/:listId", (req, res) => {
+    deleteList(dbpath, req.params.listId);
+    res.send(req.params.listId);
 });
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));

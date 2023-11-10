@@ -1,44 +1,80 @@
 import * as fs from 'node:fs';
 
-const createFile = (dbpath, name) => {
-    let data = {};
-    data[name] = [];
-    fs.writeFile(dbpath, data);
-}
-
-const readList = (dbpath, name) => {
+// returns a list of the user's existing lists represented as Javascript objects
+const fetchLists = (dbpath) => {
     try {
         if(fs.existsSync(dbpath)) {
             let data = fs.readFileSync(dbpath);
-            return JSON.parse(data)[name];
+            let list_data = JSON.parse(data);
+            return list_data["lists"];
         }
     }
     catch(e) {
-        console.log(`Error reading ${name} list from file: ${e}`);
+        console.log(`Error fetching lists from file: ${e}`);
     }
 }
 
-const createList = (dbpath, name) => {
+// creates a list from the given Javascript object in the local db
+const createList = (dbpath, newList) => {
     try {
-        if(fs.existsSync(path)) {
+        if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
-            data[name] = [];
-            fs.writeFileSync(dbpath, data);
-        }
-        else {
-            createFile(name);
+            data["lists"].push(newList);
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
         }
     }
     catch(e) {
-        console.log(`Error creating ${name} list: ${e}`);
+        console.log(`Error creating ${newList.name} list: ${e}`);
+    }
+}
+
+// modifies information in an existing list 
+const editList = (dbpath, edits) => {
+    const { listId, newName } = edits;
+    try {
+        if(fs.existsSync(dbpath)) {
+            let content = fs.readFileSync(dbpath);
+            let data = JSON.parse(content);
+            data["lists"] = data["lists"].map(list => {
+                if(list.id == listId) {
+                    return {
+                        ...list,
+                        name: newName
+                    }
+                }
+                else {
+                    return list;
+                }
+            });
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
+        }
+    }
+    catch(e) {
+        console.log(`Error trying to patch list with id ${listId}: ${e}`);
+    }
+}
+
+// deletes the list from the local db
+const deleteList = (dbpath, id) => {
+    try {
+        if(fs.existsSync(dbpath)) {
+            let content = fs.readFileSync(dbpath);
+            let data = JSON.parse(content);
+            data["lists"] = data["lists"].filter(list => {
+                return list.id !== id
+            });
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
+        }
+    }
+    catch(e) {
+        console.log(`Error trying to delete list with id ${id}: ${e}`);
     }
 }
 
 const addToList = (dbpath, name, item) => {
-    // assume item = { content: "", rating: "", etc }
     try {
-        if(fs.existsSync(path)) {
+        if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
             data[name].push(item);
@@ -52,7 +88,7 @@ const addToList = (dbpath, name, item) => {
 
 const deleteFromList = (dbpath, name, id) => {
     try {
-        if(fs.existsSync(path)) {
+        if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
             let filteredData = data[name].filter(item => {
@@ -67,18 +103,4 @@ const deleteFromList = (dbpath, name, id) => {
     }
 }
 
-const deleteList = (dbpath, name) => {
-    try {
-        if(fs.existsSync(path)) {
-            let content = fs.readFileSync(dbpath);
-            let data = JSON.parse(content);
-            delete data[name];
-            fs.writeFileSync(dbpath, data);
-        }
-    }
-    catch(e) {
-        console.log(`Error trying to delete ${name} list: ${e}`);
-    }
-}
-
-export { createFile, readList, createList, addToList, deleteFromList, deleteList };
+export { fetchLists, createList, editList, deleteList, addToList, deleteFromList };
