@@ -5,8 +5,7 @@ import axios from "axios";
 const addList = createAsyncThunk("lists/add", async (name) => {
     const response = await axios.post("http://localhost:3030/lists", {
         id: uuidv4(),
-        name: name,
-        items: []
+        name: name
     });
 
     return response.data;

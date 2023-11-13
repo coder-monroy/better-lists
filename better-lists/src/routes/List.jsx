@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useThunk } from "../hooks/use-thunk";
-import { editList, removeList, changeEditListName } from "../store";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeEditListName } from "../store";
+import { useLocation } from "react-router-dom";
+import EditListForm from "../components/EditListForm";
+import CreateItemForm from "../components/CreateItemForm";
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai"
 
 const List = () => {
-    const [doEditList, loadingEditList, editListError] = useThunk(editList);
-    const [doRemoveList, isremovingList, removeListError] = useThunk(removeList);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [showItemForm, setShowItemForm] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const location = useLocation();
     const { list } = location.state;
     const path = location.pathname;
@@ -23,50 +23,45 @@ const List = () => {
     useEffect(() => {
         setNameChanged(false);
         setEditedName("");
+        setIsExpanded(false);
+        setShowItemForm(false);
     }, [path]);
-    
 
-    const { editListName } = useSelector(state => {
-        return state.lists
-    });
 
     const handleEditClick = () => {
         setIsExpanded(!isExpanded);
         dispatch(changeEditListName(""));
     }
 
-    const handleEditNameChange = event => {
-        dispatch(changeEditListName(event.target.value));
-        setEditedName(event.target.value);
+    const handleShowItemForm = () => {
+        setShowItemForm(true);
     }
 
-    const handleEditNameSave = () => {
-        setNameChanged(true);
-        doEditList({ listId: list.id, newName: editListName });
-        setIsExpanded(false);
+    const handleItemFormClose = () => {
+        setShowItemForm(false);
     }
 
-    const handleRemoveList = () => {
-        doRemoveList(list.id);
-    }
 
     return (
         <>
-        <div className="d-flex flex-row align-items-center justify-content-between">
+        <div className="d-flex flex-row align-items-center justify-content-between mt-4">
             <h1> {nameChanged ? editedName : list.name} </h1>
             <button className="btn btn-outline-warning" onClick={handleEditClick}>Edit</button>
         </div>
-        {isExpanded ? <div className="mt-4 mb-4">
-                <div className="input-group">
-                    <button className="btn btn-outline-danger" onClick={() => {
-                        handleRemoveList();
-                        navigate("/");
-                    }} >Delete List</button>
-                    <input className="form-control" placeholder="New List Name" value={editListName} onChange={handleEditNameChange} />
-                    <button className="btn btn-outline-success" onClick={handleEditNameSave}>Save</button>
-                </div>
-            </div> : null}
+
+        {isExpanded ? <EditListForm list={list} setEditedName={setEditedName} setNameChanged={setNameChanged} setIsExpanded={setIsExpanded} /> : null}
+
         <hr />
+
+        {showItemForm && <CreateItemForm close={handleItemFormClose} />}
+
+        <div className="position-fixed" style={{ bottom: "5%", right: "3%" }} >
+            {showItemForm ? 
+                <AiFillMinusCircle className="text-secondary" size={"4em"} onClick={handleItemFormClose} /> :
+                <AiFillPlusCircle className="text-secondary" size={"4em"} onClick={handleShowItemForm} />
+            }
+        </div>
+
         </>
     );
 }

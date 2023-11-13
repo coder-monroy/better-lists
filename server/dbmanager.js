@@ -4,9 +4,9 @@ import * as fs from 'node:fs';
 const fetchLists = (dbpath) => {
     try {
         if(fs.existsSync(dbpath)) {
-            let data = fs.readFileSync(dbpath);
-            let list_data = JSON.parse(data);
-            return list_data["lists"];
+            let content = fs.readFileSync(dbpath);
+            let data = JSON.parse(content);
+            return data["lists"];
         }
     }
     catch(e) {
@@ -21,6 +21,7 @@ const createList = (dbpath, newList) => {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
             data["lists"].push(newList);
+            data["items"][newList.id] = [];
             fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
         }
     }
@@ -61,6 +62,7 @@ const deleteList = (dbpath, id) => {
         if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
+            delete data["items"][id];
             data["lists"] = data["lists"].filter(list => {
                 return list.id !== id
             });
@@ -72,13 +74,28 @@ const deleteList = (dbpath, id) => {
     }
 }
 
-const addToList = (dbpath, name, item) => {
+// returns all items in specified user list from db
+const fetchItems = (dbpath, listId) => {
     try {
         if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
-            data[name].push(item);
-            fs.writeFileSync(dbpath, data);
+            return data["items"][listId];
+        }
+    }
+    catch(e) {
+        console.log(`Error trying to fetch items from list with id ${listId}: ${e}`)
+    }
+}
+
+// creates an item from the given Javascript object and adds it to the db under the chosen list id
+const createItem = (dbpath, newItem, listId) => {
+    try {
+        if(fs.existsSync(dbpath)) {
+            let content = fs.readFileSync(dbpath);
+            let data = JSON.parse(content);
+            data["items"][listId].push(newItem);
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
         }
     }
     catch(e) {
@@ -86,7 +103,7 @@ const addToList = (dbpath, name, item) => {
     }
 }
 
-const deleteFromList = (dbpath, name, id) => {
+const deleteItem = (dbpath, name, id) => {
     try {
         if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
@@ -103,4 +120,4 @@ const deleteFromList = (dbpath, name, id) => {
     }
 }
 
-export { fetchLists, createList, editList, deleteList, addToList, deleteFromList };
+export { fetchLists, createList, editList, deleteList, fetchItems, createItem, deleteItem };

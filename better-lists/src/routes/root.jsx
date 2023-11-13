@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 const Root = () => {
     const [doFetchLists, isLoadingLists, loadingListsError] = useThunk(fetchLists);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,12 +29,12 @@ const Root = () => {
     else {
 
         if(!data.length) {
-            content = <div>No Lists Created yet...</div>;
+            content = <div>No Lists created yet...</div>;
         }
         else {
             content = data.map(list => {
                 return (
-                    <li key={list.id} className="nav-item">
+                    <li key={list.id} className="nav-item rounded">
                         <Link to={`/lists/${list.id}`} className="nav-link link-body-emphasis" onClick={e => {
                             e.preventDefault();
                             navigate(`/lists/${list.id}`, { state: { list: list } });
@@ -51,7 +50,7 @@ const Root = () => {
     return (
         <div className="container-fluid">
             <div className="row g-0">
-                <div className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary h-100 position-fixed col-4 col-lg-3" >
+                <div className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary h-100 position-fixed col-4 col-lg-3 overflow-auto" >
 
                     <CreateListForm />
 
@@ -68,7 +67,7 @@ const Root = () => {
                         <span>better lists</span>
                     </div>
                 </div>
-                <div className="container position-fixed w-100 mt-4 col-8 col-lg-9" style={{ marginLeft: "35%", paddingRight: "45%" }} >
+                <div className="container position-fixed w-100 col-8 col-lg-9" style={{ marginLeft: "35%", paddingRight: "45%" }} >
                     <Outlet />
                 </div>
             </div>

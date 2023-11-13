@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { fetchLists, createList, editList, deleteList, addToList, deleteFromList } from "./dbmanager.js";
+import { fetchLists, createList, editList, deleteList, fetchItems, createItem, deleteItem } from "./dbmanager.js";
 
 const app = express();
 const port = 3030;
@@ -12,7 +12,7 @@ app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// returns all lists and their data from db
+// returns all lists from db
 app.get("/lists", (req, res) => {
     let response = fetchLists(dbpath);
     res.send(response);
@@ -40,5 +40,18 @@ app.delete("/lists/:listId", (req, res) => {
     deleteList(dbpath, req.params.listId);
     res.send(req.params.listId);
 });
+
+// returns all items in a list from the db
+app.get("/items/:listId", (req, res) => {
+    let response = fetchItems(dbpath, req.params.listId);
+    res.send(response);
+});
+
+// posts a new item in the given list to the db
+app.post("/items/:listId", (req, res) => {
+    createItem(dbpath, req.body, req.params.listId);
+    res.send(req.body)
+});
+
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
