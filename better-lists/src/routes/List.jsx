@@ -4,6 +4,7 @@ import { changeEditListName } from "../store";
 import { useLocation } from "react-router-dom";
 import EditListForm from "../components/EditListForm";
 import CreateItemForm from "../components/CreateItemForm";
+import ItemGroup from "../components/ItemGroup";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai"
 
 const List = () => {
@@ -53,7 +54,9 @@ const List = () => {
 
         <hr />
 
-        {showItemForm && <CreateItemForm close={handleItemFormClose} />}
+        {showItemForm && <CreateItemForm listId={list.id} close={handleItemFormClose} />}
+
+        <ItemGroup listId={list.id} />
 
         <div className="position-fixed" style={{ bottom: "5%", right: "3%" }} >
             {showItemForm ? 

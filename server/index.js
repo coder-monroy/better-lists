@@ -50,7 +50,11 @@ app.get("/items/:listId", (req, res) => {
 // posts a new item in the given list to the db
 app.post("/items/:listId", (req, res) => {
     createItem(dbpath, req.body, req.params.listId);
-    res.send(req.body)
+    let response = {
+        body: req.body,
+        listId: req.params.listId
+    }
+    res.send(response);
 });
 
 

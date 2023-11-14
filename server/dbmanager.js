@@ -99,7 +99,7 @@ const createItem = (dbpath, newItem, listId) => {
         }
     }
     catch(e) {
-        console.log(`Error trying to add item: ${item} to list: ${e}`);
+        console.log(`Error trying to add item: ${newItem} to list with id ${listId}: ${e}`);
     }
 }
 

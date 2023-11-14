@@ -1,26 +1,40 @@
 {
     "lists": [
         {
-            "id": "5ecf9f00-2ffd-404f-bb2b-a16bd113e40b",
-            "name": "Manga"
+            "id": "c681b31d-d653-49e2-971c-895d1e4b3a70",
+            "name": "Mangas Read"
         },
         {
-            "id": "6d4fee43-c9b0-4844-992b-930f85b8bc6c",
-            "name": "sample 1"
+            "id": "774c29e2-627f-459c-b422-3a0e2a68bf3a",
+            "name": "Anime"
         },
         {
-            "id": "77c6cadd-7b3a-472a-9480-d14c14a86ca3",
-            "name": "sample 2"
+            "id": "773377fe-e766-47dc-b9ed-3768572a62c6",
+            "name": "Movies"
         },
         {
-            "id": "9015e989-13c6-493a-9653-49098e90ba6b",
-            "name": "Japan"
+            "id": "6d64ec11-b4ef-4768-90d7-38a047dbf716",
+            "name": "Sample List"
         }
     ],
     "items": {
-        "5ecf9f00-2ffd-404f-bb2b-a16bd113e40b": [],
-        "6d4fee43-c9b0-4844-992b-930f85b8bc6c": [],
-        "77c6cadd-7b3a-472a-9480-d14c14a86ca3": [],
-        "9015e989-13c6-493a-9653-49098e90ba6b": []
+        "c681b31d-d653-49e2-971c-895d1e4b3a70": [
+            {
+                "id": "47b5af9b-8764-4f81-aed0-95b4b94da545",
+                "text": "Sample Item"
+            },
+            {
+                "id": "09691c74-9a34-4666-bf41-2058e4c97ce0",
+                "text": "Sample Item 2"
+            }
+        ],
+        "774c29e2-627f-459c-b422-3a0e2a68bf3a": [],
+        "773377fe-e766-47dc-b9ed-3768572a62c6": [],
+        "6d64ec11-b4ef-4768-90d7-38a047dbf716": [
+            {
+                "id": "1be27ea6-072d-44a2-b428-74b3d24672c7",
+                "text": "Jujutsu Kaisen"
+            }
+        ]
     }
 }

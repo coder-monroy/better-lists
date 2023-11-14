@@ -10,13 +10,13 @@ const Root = () => {
     const [doFetchLists, isLoadingLists, loadingListsError] = useThunk(fetchLists);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        doFetchLists();
-    }, [doFetchLists]);
-
     const { data } = useSelector(state => {
         return state.lists;
     });
+
+    useEffect(() => {
+        doFetchLists();
+    }, [doFetchLists]);
 
     let content;
 
