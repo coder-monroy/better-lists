@@ -42,7 +42,7 @@ const ItemGroup = ({ listId }) => {
     }
 
     return (
-        <div className="list-group mt-4">
+        <div className="list-group mt-4 mb-5">
             {content}
         </div>
     );

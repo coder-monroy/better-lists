@@ -1,40 +1,37 @@
 {
     "lists": [
         {
-            "id": "c681b31d-d653-49e2-971c-895d1e4b3a70",
-            "name": "Mangas Read"
-        },
-        {
-            "id": "774c29e2-627f-459c-b422-3a0e2a68bf3a",
+            "id": "40a63617-c865-4ed5-a27b-5c6ae3d513eb",
             "name": "Anime"
         },
         {
-            "id": "773377fe-e766-47dc-b9ed-3768572a62c6",
+            "id": "72bad354-4eee-4e7e-9d20-b4f4f4184890",
             "name": "Movies"
-        },
-        {
-            "id": "6d64ec11-b4ef-4768-90d7-38a047dbf716",
-            "name": "Sample List"
         }
     ],
     "items": {
-        "c681b31d-d653-49e2-971c-895d1e4b3a70": [
+        "40a63617-c865-4ed5-a27b-5c6ae3d513eb": [
             {
-                "id": "47b5af9b-8764-4f81-aed0-95b4b94da545",
-                "text": "Sample Item"
-            },
-            {
-                "id": "09691c74-9a34-4666-bf41-2058e4c97ce0",
-                "text": "Sample Item 2"
+                "id": "0d2cafb6-3423-4933-be7f-294e2f62463e",
+                "text": "Jujutsu Kaisen",
+                "marker": "Last Seen Ep 24",
+                "tag_1": {
+                    "label": "",
+                    "color": "",
+                    "white": false
+                },
+                "tag_2": {
+                    "label": "",
+                    "color": "",
+                    "white": false
+                },
+                "tag_3": {
+                    "label": "",
+                    "color": "",
+                    "white": false
+                }
             }
         ],
-        "774c29e2-627f-459c-b422-3a0e2a68bf3a": [],
-        "773377fe-e766-47dc-b9ed-3768572a62c6": [],
-        "6d64ec11-b4ef-4768-90d7-38a047dbf716": [
-            {
-                "id": "1be27ea6-072d-44a2-b428-74b3d24672c7",
-                "text": "Jujutsu Kaisen"
-            }
-        ]
+        "72bad354-4eee-4e7e-9d20-b4f4f4184890": []
     }
 }

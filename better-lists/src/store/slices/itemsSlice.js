@@ -9,13 +9,42 @@ const itemsSlice = createSlice({
     initialState: {
         text: "",
         editText: "",
+        marker: "",
+        editMarker: "",
         data: {},
         isLoading: false,
-        error: null
+        error: null,
+        tag_1: { label: "", color: "", white: false },
+        tag_2: { label: "", color: "", white: false },
+        tag_3: { label: "", color: "", white: false },
+        editTag_1: { label: "", color: "", white: false },
+        editTag_2: { label: "", color: "", white: false },
+        editTag_3: { label: "", color: "", white: false }
     },
     reducers: {
         changeText(state, action) {
             state.text = action.payload;
+        },
+        changeMarker(state, action) {
+            state.marker = action.payload;
+        },
+        changeTag1(state, action) {
+            state.tag_1 = {
+                ...state.tag_1,
+                ...action.payload
+            }
+        },
+        changeTag2(state, action) {
+            state.tag_2 = {
+                ...state.tag_2,
+                ...action.payload
+            }
+        },
+        changeTag3(state, action) {
+            state.tag_3 = {
+                ...state.tag_3,
+                ...action.payload
+            }
         }
     },
     extraReducers(builder) {
@@ -47,6 +76,10 @@ const itemsSlice = createSlice({
         builder.addCase(addItem.fulfilled, (state, action) => {
             state.isLoading = false;
             state.text = "";
+            state.marker = "";
+            state.tag_1 = { label: "", color: "", white: false };
+            state.tag_2 = { label: "", color: "", white: false };
+            state.tag_3 = { label: "", color: "", white: false };
             state.data[action.payload.listId].push(action.payload.body);
         });
         builder.addCase(addItem.rejected, (state, action) => {
@@ -57,5 +90,5 @@ const itemsSlice = createSlice({
     }
 });
 
-export const { changeText } = itemsSlice.actions;
+export const { changeText, changeMarker, changeTag1, changeTag2, changeTag3 } = itemsSlice.actions;
 export const itemsReducer = itemsSlice.reducer;
