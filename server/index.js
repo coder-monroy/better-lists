@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { fetchLists, createList, editList, deleteList, fetchItems, createItem, deleteItem } from "./dbmanager.js";
+import { fetchLists, createList, editList, deleteList, fetchItems, createItem, editItem, deleteItem } from "./dbmanager.js";
 
 const app = express();
 const port = 3030;
@@ -55,6 +55,27 @@ app.post("/items/:listId", (req, res) => {
         listId: req.params.listId
     }
     res.send(response);
+});
+
+// patches/edits the item of a list in the db
+app.patch("/items/:listId", (req, res) => {
+    let edits = {
+        listId: req.params.listId,
+        itemId: req.body.itemId,
+        newText: req.body.newText,
+        newMarker: req.body.newMarker
+    }
+    editItem(dbpath, edits);
+    res.send(edits);
+});
+
+app.delete("/items/:listId/:itemId", (req, res) => {
+    let target = {
+        listId: req.params.listId,
+        itemId: req.params.itemId
+    }
+    deleteItem(dbpath, target);
+    res.send(target);
 });
 
 

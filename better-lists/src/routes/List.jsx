@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeEditListName } from "../store";
+import { changeEditListName, changeSearchTerm } from "../store";
 import { useLocation } from "react-router-dom";
 import EditListForm from "../components/EditListForm";
 import CreateItemForm from "../components/CreateItemForm";
@@ -21,12 +21,14 @@ const List = () => {
     const [nameChanged, setNameChanged] = useState(false);
     const [editedName, setEditedName] = useState("");
 
+    // makes necessary state changes, runs whenever link from sidebar is clicked
     useEffect(() => {
         setNameChanged(false);
         setEditedName("");
         setIsExpanded(false);
         setShowItemForm(false);
-    }, [path]);
+        dispatch(changeSearchTerm(""));
+    }, [path, dispatch]);
 
 
     const handleEditClick = () => {
@@ -50,7 +52,7 @@ const List = () => {
             <button className="btn btn-outline-warning" onClick={handleEditClick}>Edit</button>
         </div>
 
-        {isExpanded ? <EditListForm list={list} setEditedName={setEditedName} setNameChanged={setNameChanged} setIsExpanded={setIsExpanded} /> : null}
+        {isExpanded && <EditListForm list={list} setEditedName={setEditedName} setNameChanged={setNameChanged} setIsExpanded={setIsExpanded} />}
 
         <hr />
 

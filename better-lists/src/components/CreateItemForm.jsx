@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, changeText, changeMarker, changeTag1, changeTag2, changeTag3 } from "../store";
 import { useThunk } from "../hooks/use-thunk";
 
+// this is the longest component of the web app, can be condensed further
 const CreateItemForm = ({ listId, close }) => {
     const [doAddItem] = useThunk(addItem);
     const dispatch = useDispatch();
@@ -60,6 +61,9 @@ const CreateItemForm = ({ listId, close }) => {
     }
 
     const handleItemAdd = () => {
+        if(text.length === 0) {
+            console.warn("Item Text field must contain input when adding a new item...");
+        }
         if(text.length !== 0) {
             doAddItem({
                 listId: listId, 
@@ -85,7 +89,7 @@ const CreateItemForm = ({ listId, close }) => {
                 <div className="col-lg-5">
                     <label for="markerInput" className="form-label" >Marker (Optional)</label>
                     <input type="text" id="markerInput" className="form-control" onChange={handleMarkerChange} value={marker}  />
-                    <div className="form-text">Example: "Last Read: Ch 4", "Last Seen: Ep 25", "Watched on 12/11/2024"</div>
+                    <div className="form-text">Mark the list item with information / text of your choosing. Example: "Last Read: Ch 4", "Last Seen: Ep 25", "12/11/2024", "Rating: 8/10", "Amazing", etc.</div>
                 </div>
             </div>
 
@@ -143,8 +147,9 @@ const CreateItemForm = ({ listId, close }) => {
                 </div>
 
             </div>
+
             <div className="d-flex flex-row justify-content-end">
-                <button className="btn btn-outline-danger" onClick={handleClose}>Cancel</button>
+                <button className="btn btn-outline-secondary" onClick={handleClose}>Cancel</button>
                 <button className="btn btn-outline-success ms-3" onClick={handleItemAdd} >Add</button>
             </div>
         </div>

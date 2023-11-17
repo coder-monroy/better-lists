@@ -19,11 +19,14 @@ const EditListForm = ({ list, setEditedName, setNameChanged, setIsExpanded }) =>
     }
 
     const handleEditNameSave = () => {
+        if(editListName.length === 0) {
+            console.warn("List Title field must contain input for edit to save...");
+        }
         if(editListName.length !== 0) {
             setNameChanged(true);
             doEditList({ listId: list.id, newName: editListName });
-            setIsExpanded(false);
         }
+        setIsExpanded(false);
     }
 
     const handleRemoveList = () => {

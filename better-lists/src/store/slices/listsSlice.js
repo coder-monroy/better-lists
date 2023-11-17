@@ -4,6 +4,8 @@ import { addList } from "../thunks/addList";
 import { editList } from "../thunks/editList";
 import { removeList } from "../thunks/removeList";
 
+// the lists slice retrieves and stores only data from the "lists" section of the local db
+// the data variable in state mimics the local db structure to make updates simple
 const listsSlice = createSlice({
     name: "lists",
     initialState: {
@@ -56,7 +58,7 @@ const listsSlice = createSlice({
         builder.addCase(editList.fulfilled, (state, action) => {
             state.isLoading = false;
             state.data = state.data.map(list => {
-                if(list.id == action.payload.listId) {
+                if(list.id === action.payload.listId) {
                     return {
                         ...list,
                         name: action.payload.newName

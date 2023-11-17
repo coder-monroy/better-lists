@@ -1,5 +1,7 @@
 import * as fs from 'node:fs';
 
+// this file contains all functions necessary to manage any updates to the local db
+
 // returns a list of the user's existing lists represented as Javascript objects
 const fetchLists = (dbpath) => {
     try {
@@ -10,7 +12,7 @@ const fetchLists = (dbpath) => {
         }
     }
     catch(e) {
-        console.log(`Error fetching lists from file: ${e}`);
+        console.error(`Error fetching lists from file: ${e}`);
     }
 }
 
@@ -26,7 +28,7 @@ const createList = (dbpath, newList) => {
         }
     }
     catch(e) {
-        console.log(`Error creating ${newList.name} list: ${e}`);
+        console.error(`Error creating ${newList.name} list: ${e}`);
     }
 }
 
@@ -52,11 +54,11 @@ const editList = (dbpath, edits) => {
         }
     }
     catch(e) {
-        console.log(`Error trying to patch list with id ${listId}: ${e}`);
+        console.error(`Error trying to patch list with id ${listId}: ${e}`);
     }
 }
 
-// deletes the list from the local db
+// deletes the target list from the local db
 const deleteList = (dbpath, id) => {
     try {
         if(fs.existsSync(dbpath)) {
@@ -70,7 +72,7 @@ const deleteList = (dbpath, id) => {
         }
     }
     catch(e) {
-        console.log(`Error trying to delete list with id ${id}: ${e}`);
+        console.error(`Error trying to delete list with id ${id}: ${e}`);
     }
 }
 
@@ -84,7 +86,7 @@ const fetchItems = (dbpath, listId) => {
         }
     }
     catch(e) {
-        console.log(`Error trying to fetch items from list with id ${listId}: ${e}`)
+        console.error(`Error trying to fetch items from list with id ${listId}: ${e}`)
     }
 }
 
@@ -99,25 +101,52 @@ const createItem = (dbpath, newItem, listId) => {
         }
     }
     catch(e) {
-        console.log(`Error trying to add item: ${newItem} to list with id ${listId}: ${e}`);
+        console.error(`Error trying to add item: ${newItem} to list with id ${listId}: ${e}`);
     }
 }
 
-const deleteItem = (dbpath, name, id) => {
+// modifies information in an existing item
+const editItem = (dbpath, edits) => {
+    const { listId, itemId, newText, newMarker } = edits;
     try {
         if(fs.existsSync(dbpath)) {
             let content = fs.readFileSync(dbpath);
             let data = JSON.parse(content);
-            let filteredData = data[name].filter(item => {
-                return item.id !== id;
+            data["items"][listId] = data["items"][listId].map(item => {
+                if(item.id == itemId) {
+                    return {
+                        ...item,
+                        text: newText,
+                        marker: newMarker
+                    }
+                }
+                else {
+                    return item;
+                }
             });
-            data[name] = filteredData;
-            fs.writeFileSync(dbpath, data);
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
         }
     }
     catch(e) {
-        console.log(`Error trying to delete item with id: ${id} from list: ${e}`);
+        console.error(`Error trying to edit item with id: ${itemId} from list with id ${listId}: ${e}`);
     }
 }
 
-export { fetchLists, createList, editList, deleteList, fetchItems, createItem, deleteItem };
+// deletes the target item from the target list from the db
+const deleteItem = (dbpath, target) => {
+    try {
+        if(fs.existsSync(dbpath)) {
+            let content = fs.readFileSync(dbpath);
+            let data = JSON.parse(content);
+            data["items"][target.listId] = data["items"][target.listId].filter(item => {
+                return item.id !== target.itemId;
+            });
+            fs.writeFileSync(dbpath, JSON.stringify(data, null, 4));
+        }
+    }
+    catch(e) {
+        console.error(`Error trying to delete item with id: ${target.itemId} from list with id ${target.listId}: ${e}`);
+    }
+}
+
+export { fetchLists, createList, editList, deleteList, fetchItems, createItem, editItem, deleteItem };

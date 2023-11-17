@@ -3,7 +3,11 @@ import { addList } from "../thunks/addList";
 import { removeList } from "../thunks/removeList";
 import { fetchItems } from "../thunks/fetchItems";
 import { addItem } from "../thunks/addItem";
+import { editItem } from "../thunks/editItem";
+import { removeItem } from "../thunks/removeItem";
 
+// the items slice retrieves and stores only data from the "items" section of the local db
+// the data variable in state mimics the local db structure to make updates simple
 const itemsSlice = createSlice({
     name: "items",
     initialState: {
@@ -11,15 +15,13 @@ const itemsSlice = createSlice({
         editText: "",
         marker: "",
         editMarker: "",
+        searchTerm: "",
         data: {},
         isLoading: false,
         error: null,
         tag_1: { label: "", color: "", white: false },
         tag_2: { label: "", color: "", white: false },
-        tag_3: { label: "", color: "", white: false },
-        editTag_1: { label: "", color: "", white: false },
-        editTag_2: { label: "", color: "", white: false },
-        editTag_3: { label: "", color: "", white: false }
+        tag_3: { label: "", color: "", white: false }
     },
     reducers: {
         changeText(state, action) {
@@ -45,6 +47,15 @@ const itemsSlice = createSlice({
                 ...state.tag_3,
                 ...action.payload
             }
+        },
+        changeEditText(state, action) {
+            state.editText = action.payload;
+        },
+        changeEditMarker(state, action) {
+            state.editMarker = action.payload;
+        },
+        changeSearchTerm(state, action) {
+            state.searchTerm = action.payload;
         }
     },
     extraReducers(builder) {
@@ -87,8 +98,46 @@ const itemsSlice = createSlice({
             state.error = action.error;
         });
 
+        // patch item cases
+        builder.addCase(editItem.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(editItem.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data[action.payload.listId] = state.data[action.payload.listId].map(item => {
+                if(item.id === action.payload.itemId) {
+                    return {
+                        ...item,
+                        text: action.payload.newText,
+                        marker: action.payload.newMarker
+                    }
+                }
+                else {
+                    return item;
+                }
+            });
+        });
+        builder.addCase(editItem.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error;
+        });
+
+        // delete item cases
+        builder.addCase(removeItem.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(removeItem.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data[action.payload.listId] = state.data[action.payload.listId].filter(item => {
+                return item.id !== action.payload.itemId;
+            });
+        });
+        builder.addCase(removeItem.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error;
+        });
     }
 });
 
-export const { changeText, changeMarker, changeTag1, changeTag2, changeTag3 } = itemsSlice.actions;
+export const { changeText, changeMarker, changeTag1, changeTag2, changeTag3, changeEditText, changeEditMarker, changeSearchTerm } = itemsSlice.actions;
 export const itemsReducer = itemsSlice.reducer;

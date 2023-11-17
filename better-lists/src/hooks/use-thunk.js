@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
+// this hook is for managing when a request is currently loading or resulted in error
 const useThunk = thunk => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);

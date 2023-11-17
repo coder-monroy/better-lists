@@ -10,16 +10,19 @@ const Root = () => {
     const [doFetchLists, isLoadingLists, loadingListsError] = useThunk(fetchLists);
     const navigate = useNavigate();
 
+    // obtains list data from store
     const { data } = useSelector(state => {
         return state.lists;
     });
 
+    // fetches list data from local db, updates store
     useEffect(() => {
         doFetchLists();
     }, [doFetchLists]);
 
     let content;
 
+    // can add spinners while loading, however requests don't take long enough to be able to see them
     if(isLoadingLists) {
         content = <div>Loading...</div>;
     }
@@ -28,10 +31,14 @@ const Root = () => {
     }
     else {
 
-        if(!data.length) {
+        if(data === undefined) {
+            content = <div>Please wait...</div>
+        }
+        else if(!data.length) {
             content = <div>No Lists created yet...</div>;
         }
         else {
+            // upon successfully retrieving list data, create list items containing links to each list, passing in desired state
             content = data.map(list => {
                 return (
                     <li key={list.id} className="nav-item rounded">

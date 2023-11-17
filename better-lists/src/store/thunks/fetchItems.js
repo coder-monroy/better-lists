@@ -2,12 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const fetchItems = createAsyncThunk("items/fetch", async (listId) => {
-    // console.log("Attempting fetch items thunk");
-
     const response = await axios.get(`http://localhost:3030/items/${listId}`);
-
-    // console.log("fetchItems thunk: ", response.data);
-    // await pause(1000);
 
     return {
         response: response.data,
@@ -15,6 +10,7 @@ const fetchItems = createAsyncThunk("items/fetch", async (listId) => {
     }
 });
 
+// function used for testing purposes, seeing loading behavior, etc.
 const pause = duration => {
     return new Promise(resolve => {
         setTimeout(resolve, duration);
