@@ -6,10 +6,11 @@ This is a project I coded for fun, and shows my skills in React with Redux, Node
 Although I know how to incorporate MongoDB, I decided to use a local JSON file to make it easy for anyone to install
 and run the program, without having to manually input or change any code to connect to a database. The front-end is made
 with React components, and makes use of React Router to travel between Lists and Bootstrap to style and make the UI reponsive.
-The back-end is made with Express, and handles the requests and CRUD operations on the database. Below is a video sample of 
-the web app in action.
+The back-end is made with Express, and handles the requests and CRUD operations on the database. 
 
-https://github.com/coder-monroy/better-lists/assets/97262622/e80cb80b-4570-4d82-9845-b4b947da1697
+Below is a video sample of the web app in action.
+
+https://github.com/coder-monroy/better-lists/assets/97262622/043bd413-f743-4951-a05f-fac1b37b756d
 
 ## How to use this project on your computer
 
