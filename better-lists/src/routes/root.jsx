@@ -42,9 +42,9 @@ const Root = () => {
             content = data.map(list => {
                 return (
                     <li key={list.id} className="nav-item rounded">
-                        <NavLink to={`/lists/${list.id}`} className={"nav-link"} onClick={e => {
+                        <NavLink to={`lists/${list.id}`} className={"nav-link"} onClick={e => {
                             e.preventDefault();
-                            navigate(`/lists/${list.id}`, { state: { list: list } });
+                            navigate(`lists/${list.id}`, { state: { list: list } });
                         }} style={({ isActive }) => {
                                 return {
                                     color: isActive ? "white" : "black",
