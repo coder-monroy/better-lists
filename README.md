@@ -10,7 +10,10 @@ The back-end is made with Express, and handles the requests and CRUD operations 
 
 Below is a video sample of the web app in action.
 
-https://github.com/coder-monroy/better-lists/assets/97262622/043bd413-f743-4951-a05f-fac1b37b756d
+
+https://github.com/coder-monroy/better-lists/assets/97262622/6a710543-310c-406f-a80d-4e7becd059ff
+
+
 
 ## How to use this project on your computer
 
