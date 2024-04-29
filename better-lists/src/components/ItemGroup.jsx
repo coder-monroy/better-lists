@@ -9,8 +9,16 @@ const ItemGroup = ({ listId }) => {
     const [doFetchItems, isFetchingItems, fetchingItemsError] = useThunk(fetchItems);
     const [expandedIndex, setExpandedIndex] = useState(-1);
 
+    // fetches item data from the given list only
+    useEffect(() => {
+        doFetchItems(listId);
+    }, [doFetchItems, listId]);
+
     // here, items are retrieved from store, as the searchTerm var in the store changes, items displayed are filtered
     const { items } = useSelector(({ items: { data, searchTerm } }) => {
+        if(data[listId] == null) {
+            return {};
+        }
         const renderedItems = data[listId].filter(item =>
             item.text.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -18,11 +26,6 @@ const ItemGroup = ({ listId }) => {
             items: renderedItems
         }
     });
-
-    // fetches item data from the given list only
-    useEffect(() => {
-        doFetchItems(listId);
-    }, [doFetchItems, listId]);
 
     // this function, coupled with the state expandedIndex makes sure only one item has the edit menu opened at a time
     const handleEditClick = index => {
